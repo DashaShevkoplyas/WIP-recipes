@@ -5,6 +5,7 @@ import lombok.*;
 
 @Data
 @Entity
+@EqualsAndHashCode(exclude = {"recipe"})
 public class Notes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

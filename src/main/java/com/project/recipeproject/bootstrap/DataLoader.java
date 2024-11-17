@@ -1,9 +1,8 @@
-package com.project.recipeproject;
+package com.project.recipeproject.bootstrap;
 
-import com.project.recipeproject.model.Category;
-import com.project.recipeproject.model.Recipe;
+import com.project.recipeproject.model.*;
 import com.project.recipeproject.repositories.RecipeRepository;
-import lombok.Builder;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
