@@ -1,5 +1,7 @@
 package com.project.recipeproject.services;
 
+import com.project.recipeproject.converters.RecipeCommandToRecipe;
+import com.project.recipeproject.converters.RecipeToRecipeCommand;
 import com.project.recipeproject.model.Recipe;
 import com.project.recipeproject.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,10 @@ import static org.mockito.Mockito.*;
 
 class RecipeServiceImplTest {
     @Mock
+    private RecipeCommandToRecipe recipeCommandToRecipe;
+    @Mock
+    private RecipeToRecipeCommand recipeToRecipeCommand;
+    @Mock
     private RecipeRepository recipeRepository;
 
     private RecipeServiceImpl recipeService;
@@ -22,7 +28,7 @@ class RecipeServiceImplTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
@@ -51,4 +57,6 @@ class RecipeServiceImplTest {
         verify(recipeRepository).findById(anyLong());
         verify(recipeRepository, never()).findAll();
     }
+
+    //TODO: add tests
 }
