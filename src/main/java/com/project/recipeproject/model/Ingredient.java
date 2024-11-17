@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Data
 @Entity
 @EqualsAndHashCode(exclude = {"recipe"})
+@ToString(exclude = {"recipe"})
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
