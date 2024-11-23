@@ -31,7 +31,6 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
             return null;
         }
         final Recipe recipe = new Recipe();
-        recipe.setId(source.getId());
         recipe.setDescription(source.getDescription());
         recipe.setDifficulty(source.getDifficulty());
         recipe.setImage(source.getImage());
