@@ -2,6 +2,7 @@ package com.project.recipeproject.converters;
 
 import com.project.recipeproject.commands.IngredientCommand;
 import com.project.recipeproject.model.Ingredient;
+import com.project.recipeproject.model.Recipe;
 import jakarta.annotation.Nullable;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
@@ -27,6 +28,13 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
         ingredient.setDescription(source.getDescription());
         ingredient.setAmount(source.getAmount());
         ingredient.setUom(unitOfMeasureCommandToUnit.convert(source.getUom()));
+        if (source.getRecipeId() != null) {
+            Recipe recipe = new Recipe();
+            recipe.setId(source.getRecipeId());
+            ingredient.setRecipe(recipe);
+            recipe.setIngredients(ingredient);
+        }
+
         return ingredient;
     }
 }

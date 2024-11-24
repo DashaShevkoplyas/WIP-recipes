@@ -84,7 +84,15 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title">Ingredients</h1>
+                        <div class="row">
+                            <div class="col-md-11 ">
+                                <h1 class="panel-title">Ingredients</h1>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="btn btn-default" href="#"
+                                   th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">View</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -92,10 +100,10 @@
                                 <ul>
                                     <li th:remove="all">1 Cup of milk</li>
                                     <li th:remove="all">1 Teaspoon of chocolate</li>
-                                    <li th:each="ingredient: ${recipe.ingredients}"
-                                        th:text="${ingredient.amount +
-                                        ' ' + ingredient.uom.uom +
-                                        ' - ' + ingredient.description}">1 Teaspoon of Sugar
+                                    <li th:each="ingredient : ${recipe.ingredients}"
+                                        th:text="${(ingredient.getAmount() +
+                                        ' ' + ingredient.uom.getUom() +
+                                        ' - ' + ingredient.getDescription())}">1 Teaspoon of Sugar
                                     </li>
                                 </ul>
                             </div>
@@ -133,7 +141,8 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <p th:text="${recipe.notes.notesText}">Lorem ipsum dolor sit amet, consectetuer adipiscing
+                                <p th:text="${recipe.notes.notesText}">Lorem ipsum dolor sit amet, consectetuer
+                                    adipiscing
                                     elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus
                                     et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies
                                     nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede
