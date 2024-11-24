@@ -29,7 +29,7 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
     @Override
     public Recipe convert(RecipeCommand source) {
         if (source == null) {
-            return null;
+            return new Recipe();
         }
         final Recipe recipe = new Recipe();
         recipe.setId(source.getId());
