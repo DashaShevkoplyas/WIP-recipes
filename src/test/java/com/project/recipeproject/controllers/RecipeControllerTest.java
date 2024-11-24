@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class RecipeControllerTest {
@@ -62,5 +61,26 @@ public class RecipeControllerTest {
                 )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/2/show"));
+    }
+
+    @Test
+    public void getUpdateForm() throws Exception {
+        var recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+        when(recipeService.findCommandById(any())).thenReturn(recipeCommand);
+
+        mockMvc.perform(get("/recipe/1/update"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/edit"))
+                .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    public void deleteRecipe() throws Exception {
+        mockMvc.perform(get("/recipe/1/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+
+        verify(recipeService).deleteRecipe(anyLong());
     }
 }
