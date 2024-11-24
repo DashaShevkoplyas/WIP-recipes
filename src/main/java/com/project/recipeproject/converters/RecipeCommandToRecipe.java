@@ -3,6 +3,7 @@ package com.project.recipeproject.converters;
 import com.project.recipeproject.commands.CategoryCommand;
 import com.project.recipeproject.commands.IngredientCommand;
 import com.project.recipeproject.commands.RecipeCommand;
+import com.project.recipeproject.model.Notes;
 import com.project.recipeproject.model.Recipe;
 import jakarta.annotation.Nullable;
 import lombok.Synchronized;
@@ -31,6 +32,7 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
             return null;
         }
         final Recipe recipe = new Recipe();
+        recipe.setId(source.getId());
         recipe.setDescription(source.getDescription());
         recipe.setDifficulty(source.getDifficulty());
         recipe.setImage(source.getImage());
@@ -40,6 +42,9 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
         recipe.setServings(source.getServings());
         recipe.setUrl(source.getUrl());
         recipe.setSource(source.getSource());
+        if (source.getNotes() == null) {
+            recipe.setNotes(new Notes());
+        }
         recipe.setNotes(notesCommandToNotes.convert(source.getNotes()));
         final Set<CategoryCommand> categories = source.getCategories();
         if (categories != null && !categories.isEmpty()) {

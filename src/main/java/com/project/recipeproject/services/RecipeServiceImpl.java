@@ -3,6 +3,7 @@ package com.project.recipeproject.services;
 import com.project.recipeproject.commands.RecipeCommand;
 import com.project.recipeproject.converters.RecipeCommandToRecipe;
 import com.project.recipeproject.converters.RecipeToRecipeCommand;
+import com.project.recipeproject.model.Notes;
 import com.project.recipeproject.model.Recipe;
 import com.project.recipeproject.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -36,16 +38,42 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe findById(Long id) {
-        return recipeRepository.findById(id).orElseThrow(RuntimeException::new);
+        return findRecipeById(id).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand findCommandById(Long id) {
+        var recipe = findById(id);
+        return recipeToRecipeCommand.convert(recipe);
     }
 
     @Override
     @Transactional
     public RecipeCommand saveRecipe(RecipeCommand recipeCommand) {
         var recipe = recipeCommandToRecipe.convert(recipeCommand);
+        setNotes(recipe.getId(), recipe);
         var savedRecipe = recipeRepository.save(recipe);
         log.debug("Saved recipe: {}", savedRecipe.getId());
 
         return recipeToRecipeCommand.convert(savedRecipe);
+    }
+
+    private void setNotes(Long id, Recipe recipeToUpdate) {
+        if (id == null) {
+            return;
+        }
+        var recipe = findRecipeById(id);
+        if (recipe.isPresent() && recipe.get().getNotes() != null) {
+            var notes = recipe.get().getNotes();
+            var updateNotes = new Notes();
+            updateNotes.setId(notes.getId());
+            updateNotes.setNotesText(recipeToUpdate.getNotes().getNotesText());
+            recipeToUpdate.setNotes(updateNotes);
+        }
+    }
+
+    private Optional<Recipe> findRecipeById(Long id) {
+        return recipeRepository.findById(id);
     }
 }
